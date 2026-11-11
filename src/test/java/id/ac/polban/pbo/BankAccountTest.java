@@ -3,6 +3,7 @@ package id.ac.polban.pbo;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,5 +45,24 @@ class BankAccountTest {
         );
 
         assertEquals(100_000, acc.getBalance(), 0.001);
+    }
+
+    @Test
+    void withdraw_valid_tidakMelempar() {
+        BankAccount acc =
+            new BankAccount("001", "Andi", 100_000);
+
+        assertDoesNotThrow(() -> acc.withdraw(30_000));
+        assertEquals(70_000, acc.getBalance(), 0.001);
+    }
+
+    @Test
+    void constructor_saldoNegatif_ditolak() {
+        IllegalArgumentException ex = assertThrows(
+            IllegalArgumentException.class,
+            () -> new BankAccount("001", "Andi", -1)
+        );
+
+        assertEquals("Saldo awal tidak boleh negatif", ex.getMessage());
     }
 }
