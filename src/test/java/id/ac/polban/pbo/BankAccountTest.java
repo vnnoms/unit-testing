@@ -1,5 +1,6 @@
 package id.ac.polban.pbo;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -9,17 +10,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class BankAccountTest {
 
+    private BankAccount sender;
+    private BankAccount receiver;
+
+    @BeforeEach
+    void setUp() {
+        sender = new BankAccount("001", "Andi", 100_000);
+        receiver = new BankAccount("002", "Budi", 0);
+    }
+
     @Test
     void deposit_menambahSaldo() {
-        // Arrange
-        BankAccount acc =
-            new BankAccount("001", "Andi", 100_000);
-
         // Act
-        acc.deposit(50_000);
+        sender.deposit(50_000);
 
         // Assert
-        assertEquals(150_000, acc.getBalance(), 0.001);
+        assertEquals(150_000, sender.getBalance(), 0.001);
     }
 
     @Test
@@ -36,24 +42,18 @@ class BankAccountTest {
 
     @Test
     void withdraw_melebihiSaldo_ditolak() {
-        BankAccount acc =
-            new BankAccount("001", "Andi", 100_000);
-
         assertThrows(
             InsufficientBalanceException.class,
-            () -> acc.withdraw(200_000)
+            () -> sender.withdraw(200_000)
         );
 
-        assertEquals(100_000, acc.getBalance(), 0.001);
+        assertEquals(100_000, sender.getBalance(), 0.001);
     }
 
     @Test
     void withdraw_valid_tidakMelempar() {
-        BankAccount acc =
-            new BankAccount("001", "Andi", 100_000);
-
-        assertDoesNotThrow(() -> acc.withdraw(30_000));
-        assertEquals(70_000, acc.getBalance(), 0.001);
+        assertDoesNotThrow(() -> sender.withdraw(30_000));
+        assertEquals(70_000, sender.getBalance(), 0.001);
     }
 
     @Test
