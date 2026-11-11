@@ -2,6 +2,8 @@ package id.ac.polban.pbo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -64,5 +66,14 @@ class BankAccountTest {
         );
 
         assertEquals("Saldo awal tidak boleh negatif", ex.getMessage());
+    }
+
+    @ParameterizedTest(name = "setoran {0} ditolak")
+    @ValueSource(doubles = {0, -1, -50_000})
+    void deposit_tidakValid(double amount) {
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> sender.deposit(amount)
+        );
     }
 }
