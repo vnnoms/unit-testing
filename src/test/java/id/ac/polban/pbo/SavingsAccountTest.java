@@ -19,4 +19,16 @@ class SavingsAccountTest {
 
         assertEquals(100_000, acc.getBalance(), 0.001);
     }
+
+    @Test
+    void withdraw_tepatBatasMinimum_diterima()
+            throws InsufficientBalanceException {
+        SavingsAccount savings = new SavingsAccount(
+            "003", "Citra", 100_000, 0.05);
+
+        savings.withdraw(50_000);
+
+        assertEquals(SavingsAccount.MIN_BALANCE,
+                     savings.getBalance(), 0.001);
+    }
 }
