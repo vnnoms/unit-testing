@@ -69,7 +69,7 @@ class BankAccountTest {
     }
 
     @ParameterizedTest(name = "setoran {0} ditolak")
-    @ValueSource(doubles = {0, -1, -50_000})
+    @ValueSource(doubles = {0, -0.01, -1, -50_000})
     void deposit_tidakValid(double amount) {
         assertThrows(
             IllegalArgumentException.class,
