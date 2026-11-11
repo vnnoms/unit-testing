@@ -115,9 +115,6 @@ class BankAccountTest {
 
     @Test
     void transfer_targetNull_ditolak() {
-        BankAccount sender =
-            new BankAccount("001", "Andi", 100_000);
-
         assertThrows(
             IllegalArgumentException.class,
             () -> sender.transfer(null, 20_000)
