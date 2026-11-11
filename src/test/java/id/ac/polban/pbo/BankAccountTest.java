@@ -1,6 +1,9 @@
 package id.ac.polban.pbo;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -11,10 +14,21 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@DisplayName("Pengujian rekening bank")
 class BankAccountTest {
 
     private BankAccount sender;
     private BankAccount receiver;
+
+    @BeforeAll
+    static void mulaiSemuaTest() {
+        System.out.println("@BeforeAll: mulai seluruh test");
+    }
+
+    @AfterAll
+    static void selesaiSemuaTest() {
+        System.out.println("@AfterAll: seluruh test selesai");
+    }
 
     @BeforeEach
     void setUp() {
@@ -23,6 +37,7 @@ class BankAccountTest {
     }
 
     @Test
+    @DisplayName("Setoran menambah saldo")
     void deposit_menambahSaldo() {
         // Act
         sender.deposit(50_000);
@@ -44,6 +59,7 @@ class BankAccountTest {
     }
 
     @Test
+    @DisplayName("Penarikan melebihi saldo ditolak tanpa mengubah saldo")
     void withdraw_melebihiSaldo_ditolak() {
         assertThrows(
             InsufficientBalanceException.class,
@@ -54,6 +70,7 @@ class BankAccountTest {
     }
 
     @Test
+    @DisplayName("Penarikan valid mengurangi saldo")
     void withdraw_valid_tidakMelempar() {
         assertDoesNotThrow(() -> sender.withdraw(30_000));
         assertEquals(70_000, sender.getBalance(), 0.001);
